@@ -1,0 +1,30 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true,
+        "mocha": true
+    },
+    "extends": ["eslint:recommended"],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true,
+            "impliedStrict": true
+        },
+        "sourceType": "module"
+    },
+    "rules": {
+        "quotes": [ "error", "double" ],
+        "semi": [ "error", "always" ],
+        "indent": [ "error", 4, { "SwitchCase": 1 } ],
+        "no-multiple-empty-lines": [ "error", { "max": 1 } ],
+        "linebreak-style": [ "error", "unix"],
+        "no-console": [ "warn", { "allow": [ "info", "error" ] } ],
+        "comma-dangle": ["error", "never"]
+    },
+    "settings": {
+    }
+}
