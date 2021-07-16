@@ -14,6 +14,8 @@ class State {
 
 class NodeBuilder {
     constructor(state) {
+        this.prevState = null;
+
         if (state) {
             this.state = state;
         } else {
@@ -33,9 +35,19 @@ class NodeBuilder {
 
     _addElement(tag, attributes) {
         const element = this._createElement(tag, attributes);
-        const newState = this.state.addElement(element);
+        this.state = this.state.addElement(element);
 
-        return new NodeBuilder(newState);
+        return this;
+    }
+
+    addElement(element) {
+        this.state = this.state.addElement(element);
+
+        return this;
+    }
+
+    insert(child) {
+        this.state.index.appendChild(child);
     }
 
     div(attributes) {
@@ -44,7 +56,7 @@ class NodeBuilder {
 
     withText(text) {
         const content = document.createTextNode(text);
-        this.state.index.appendChild(content);
+        this.insert(content);
 
         return this;
     }
@@ -59,18 +71,28 @@ class NodeBuilder {
         return this;
     }
 
-    done($root) {
-        if ($root.hasChildNodes()) {
-            let children = $root.childNodes;
+    re(){
+        this.state = new State();
 
-            for (let i = 0; i < children.length; i++) {
-                $root.replaceChild(this.state.elements[i], children[i]);
+        return this;
+    }
+
+    done($root) {
+        if (this.prevState) {
+            for (let i = 0; i < this.prevState.elements.length; i++) {
+                this.prevState.elements[i].parentNode.replaceChild(this.state.elements[i], this.prevState.elements[i]);
             }
         } else {
-            for (let element of this.state.elements) {
-                $root.appendChild(element);
+            if ($root) {
+                for (let element of this.state.elements) {
+                    $root.appendChild(element);
+                }
             }
         }
+
+        this.prevState = this.state;
+
+        return this.state.index;
     }
 }
 

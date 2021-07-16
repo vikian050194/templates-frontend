@@ -1,8 +1,8 @@
-import { ColorfulMessage } from "./ColorfulMessage";
+import { ColorfulMessagesList } from "./ColorfulMessagesList";
 
 const App = (rootSelector) => {
     const $root = document.querySelector(rootSelector);
-    ColorfulMessage($root, "Hello, World!");
+    ColorfulMessagesList($root);
 };
 
 export default App;

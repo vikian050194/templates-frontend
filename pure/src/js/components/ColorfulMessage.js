@@ -1,6 +1,6 @@
 import { NodeBuilder } from "./NodeBuilder";
 
-const ColorfulMessage = ($root, message) => {
+const ColorfulMessage = (message) => {
     const colors = ["a", "b", "c"];
     let state = { color: 0 };
 
@@ -20,14 +20,19 @@ const ColorfulMessage = ($root, message) => {
         });
     };
 
+    const h = new NodeBuilder();
+
     const render = () => {
         const state = getState();
-        const h = new NodeBuilder();
 
-        h.div({ class: colors[state.color] }).withText(message).onClick(nextColor).done($root);
+        const element = h.re().div({ class: colors[state.color] }).withText(message).onClick(nextColor).done();
+
+        return element;
     };
 
-    render();
+    return {
+        render
+    };
 };
 
 export { ColorfulMessage };
