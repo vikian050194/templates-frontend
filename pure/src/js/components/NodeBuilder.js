@@ -12,15 +12,11 @@ class State {
     }
 }
 
-class NodeBuilder {
-    constructor(state) {
+export default class NodeBuilder {
+    constructor($root) {
+        this.$root = $root;
         this.prevState = null;
-
-        if (state) {
-            this.state = state;
-        } else {
-            this.state = new State();
-        }
+        this.state = new State();
     }
 
     _createElement(tag, attributes) {
@@ -54,6 +50,14 @@ class NodeBuilder {
         return this._addElement("div", attributes);
     }
 
+    span(attributes) {
+        return this._addElement("span", attributes);
+    }
+
+    h1(attributes) {
+        return this._addElement("h1", attributes);
+    }
+
     withText(text) {
         const content = document.createTextNode(text);
         this.insert(content);
@@ -71,29 +75,20 @@ class NodeBuilder {
         return this;
     }
 
-    re(){
-        this.state = new State();
-
-        return this;
-    }
-
-    done($root) {
+    done() {
         if (this.prevState) {
             for (let i = 0; i < this.prevState.elements.length; i++) {
-                this.prevState.elements[i].parentNode.replaceChild(this.state.elements[i], this.prevState.elements[i]);
+                this.$root.replaceChild(this.state.elements[i], this.prevState.elements[i]);
             }
         } else {
-            if ($root) {
-                for (let element of this.state.elements) {
-                    $root.appendChild(element);
-                }
+            for (let element of this.state.elements) {
+                this.$root.appendChild(element);
             }
         }
 
         this.prevState = this.state;
-
-        return this.state.index;
+        const result = this.state;
+        this.state = new State();
+        return result.index;
     }
 }
-
-export { NodeBuilder };

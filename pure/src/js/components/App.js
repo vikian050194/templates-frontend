@@ -1,8 +1,8 @@
-import { ColorfulMessagesList } from "./ColorfulMessagesList";
+import { ItemsList } from "./ItemsList";
 
 const App = (rootSelector) => {
     const $root = document.querySelector(rootSelector);
-    ColorfulMessagesList($root);
+    ItemsList($root);
 };
 
 export default App;
